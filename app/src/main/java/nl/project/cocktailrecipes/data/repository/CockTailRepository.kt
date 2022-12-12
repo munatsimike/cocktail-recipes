@@ -1,12 +1,18 @@
 package nl.project.cocktailrecipes.data.repository
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import nl.project.cocktailrecipes.data.local.CockTailDao
 import nl.project.cocktailrecipes.data.remote.CockTailService
-import nl.project.cocktailrecipes.model.ApiResponse
 import javax.inject.Inject
 
-class CockTailRepository @Inject constructor(private val cockTailService: CockTailService) {
+class CockTailRepository @Inject constructor(
+    private val cockTailService: CockTailService,
+    private val cockTailDao: CockTailDao
+) {
 
-    suspend fun fetchCocktails(): Flow<ApiResponse> = flowOf(cockTailService.searchCockTail())
+    // fetch cocktails from room
+    val cocktails = cockTailDao.fetchCockTails()
+
+    suspend fun saveCocktailsToRoom() {
+        cockTailDao.insertCockTails(cockTailService.searchCockTail().drinks)
+    }
 }

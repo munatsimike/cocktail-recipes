@@ -20,15 +20,20 @@ class CockTailViewModel @Inject constructor(
     val cockTails: StateFlow<NetworkState> = _cockTails
 
     init {
-        collectCocktail()
+        viewModelScope.launch {
+            saveCockTailsToRoomDb()
+            fetchCockTails()
+        }
     }
 
-    private fun collectCocktail() {
+    suspend fun saveCockTailsToRoomDb() {
+        cockTailRepository.saveCocktailsToRoom()
+    }
+
+    private suspend fun fetchCockTails() {
         _cockTails.value = NetworkState.Loading
-        viewModelScope.launch {
-            cockTailRepository.fetchCocktails().collect {
-                _cockTails.value = NetworkState.Success(it.drinks)
-            }
+        cockTailRepository.cocktails.collect {
+            _cockTails.value = NetworkState.Success(it)
         }
     }
 }

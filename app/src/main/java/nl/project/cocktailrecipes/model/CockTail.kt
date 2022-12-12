@@ -1,6 +1,11 @@
 package nl.project.cocktailrecipes.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "cock_tail")
 data class CockTail(
+    @PrimaryKey(autoGenerate = false)
     val dateModified: String,
     val idDrink: String,
     val strAlcoholic: String,
@@ -50,4 +55,4 @@ data class CockTail(
     val strMeasure9: String?,
     val strTags: String?,
     val strVideo: String?
-)
+): java.io.Serializable
