@@ -21,7 +21,7 @@ object DataBaseModule {
             context.applicationContext,
             AppDatabase::class.java,
             "app_database.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides

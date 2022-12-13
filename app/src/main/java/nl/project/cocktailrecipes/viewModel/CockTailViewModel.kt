@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import nl.project.cocktailrecipes.data.repository.CockTailRepository
-import nl.project.cocktailrecipes.ui.state.NetworkState
+import nl.project.cocktailrecipes.ui.state.CockTailState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,9 +15,9 @@ class CockTailViewModel @Inject constructor(
     private val cockTailRepository: CockTailRepository
 ) : ViewModel() {
 
-    private val _cockTails: MutableStateFlow<NetworkState> =
-        MutableStateFlow(NetworkState.NotLoading)
-    val cockTails: StateFlow<NetworkState> = _cockTails
+    private val _cockTails: MutableStateFlow<CockTailState> =
+        MutableStateFlow(CockTailState.NotLoading)
+    val cockTails: StateFlow<CockTailState> = _cockTails
 
     init {
         viewModelScope.launch {
@@ -31,9 +31,15 @@ class CockTailViewModel @Inject constructor(
     }
 
     private suspend fun fetchCockTails() {
-        _cockTails.value = NetworkState.Loading
+        _cockTails.value = CockTailState.Loading
         cockTailRepository.cocktails.collect {
-            _cockTails.value = NetworkState.Success(it)
+            _cockTails.value = CockTailState.MultipleDisplay(it)
+        }
+    }
+
+    fun searchCockTailById(id: String) {
+        viewModelScope.launch {
+           
         }
     }
 }

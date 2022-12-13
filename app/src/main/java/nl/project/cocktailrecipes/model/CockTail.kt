@@ -6,8 +6,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "cock_tail")
 data class CockTail(
     @PrimaryKey(autoGenerate = false)
-    val dateModified: String,
     val idDrink: String,
+    val IsLiked: Boolean = false,
+    val dateModified: String?,
     val strAlcoholic: String,
     val strCategory: String,
     val strCreativeCommonsConfirmed: String,
