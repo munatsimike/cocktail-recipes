@@ -1,6 +1,7 @@
 package nl.project.cocktailrecipes.ui.layouts
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -16,11 +17,13 @@ import nl.project.cocktailrecipes.R
 object ImageViewer {
 
     @Composable
-    fun Layout(url: String, modifier: Modifier = Modifier, onImageClick: ()-> Unit) {
+    fun Layout(url: String, modifier: Modifier = Modifier, onImageClick: () -> Unit) {
         AsyncImage(
-            modifier = modifier.clickable( enabled = true, onClick = {
-                onImageClick.invoke()
-            }),
+            modifier = modifier
+                .fillMaxWidth()
+                .clickable(enabled = true, onClick = {
+                    onImageClick.invoke()
+                }),
             model = ImageRequest
                 .Builder(LocalContext.current)
                 .data(url)
@@ -30,7 +33,7 @@ object ImageViewer {
             contentDescription = stringResource(
                 id = R.string.cock_tail_image
             ),
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.FillBounds,
             placeholder = painterResource(id = R.drawable.ic_baseline_image_24)
         )
     }
