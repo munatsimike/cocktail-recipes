@@ -25,32 +25,57 @@ class CockTailViewModel @Inject constructor(
         MutableStateFlow(CockTailState.NotSelected)
     val cockTail: StateFlow<CockTailState> = _cockTail
 
+
+    private val _popularCockTail: MutableStateFlow<NetworkState> =
+        MutableStateFlow(NetworkState.NotLoading)
+    val popularCockTail: StateFlow<NetworkState> = _popularCockTail
+
     init {
-        viewModelScope.launch {
-            saveCockTailsToRoomDb()
-            fetchCockTails()
-        }
+        fetchCockTails()
+        fetchPopularCockTails()
     }
 
     private suspend fun saveCockTailsToRoomDb() {
         cockTailRepository.saveCocktailsToRoom()
     }
 
-    private suspend fun fetchCockTails() {
+    private fun fetchCockTails() {
         _cockTails.value = NetworkState.Loading
-        cockTailRepository.cocktails.collect {
-            _cockTails.value = NetworkState.Success(it)
-        }
-    }
-
-    fun searchCockTailById(id: String) {
         viewModelScope.launch {
-            cockTailRepository.searchCockTailById(id).collectLatest {
-                _cockTail.value = CockTailState.NotSelected
-                _cockTail.value = CockTailState.Selected(it)
+            saveCockTailsToRoomDb()
+            cockTailRepository.cocktails.collectLatest {
+                _cockTails.value = NetworkState.Success(it)
             }
         }
     }
+
+    private fun fetchPopularCockTails() {
+        viewModelScope.launch {
+            _popularCockTail.value = NetworkState.Loading
+            cockTailRepository.popular(ingredient = "c").collectLatest {
+                _popularCockTail.value = NetworkState.Success(it)
+            }
+        }
+    }
+
+    fun searchCockTailById(id: String, isPopular: Boolean) {
+        viewModelScope.launch {
+            var data = cockTails
+            if (isPopular) {
+                data = popularCockTail
+            }
+            data.collectLatest { cockTails ->
+                when (cockTails) {
+                    is NetworkState.Success -> {
+                        val data = cockTails.cockTails
+                        _cockTail.value = CockTailState.Selected(data.first { it.idDrink == id })
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
+
 
     fun likeDisLike(id: String, isLiked: Boolean) {
         viewModelScope.launch {

@@ -58,7 +58,9 @@ object DetailPage {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = cockTail.strInstructions, fontSize = 18.sp, overflow = TextOverflow.Clip
+                    text = cockTail.strInstructions,
+                    fontSize = 18.sp,
+                    overflow = TextOverflow.Clip
                 )
             }
 

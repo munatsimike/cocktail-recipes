@@ -9,13 +9,13 @@ data class CockTail(
     val idDrink: String,
     val IsLiked: Boolean = false,
     val dateModified: String?,
-    val strAlcoholic: String,
-    val strCategory: String,
-    val strCreativeCommonsConfirmed: String,
+    val strAlcoholic: String?,
+    val strCategory: String?,
+    val strCreativeCommonsConfirmed: String?,
     val strDrink: String,
     val strDrinkAlternate: String?,
     val strDrinkThumb: String,
-    val strGlass: String,
+    val strGlass: String?,
     val strIBA: String?,
     val strImageAttribution: String?,
     val strImageSource: String?,
@@ -56,4 +56,4 @@ data class CockTail(
     val strMeasure9: String?,
     val strTags: String?,
     val strVideo: String?
-): java.io.Serializable
+) : java.io.Serializable

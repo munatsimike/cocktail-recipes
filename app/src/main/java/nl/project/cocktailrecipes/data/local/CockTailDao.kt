@@ -15,9 +15,9 @@ interface CockTailDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCockTails(cockTails: List<CockTail>)
 
-    @Query("SELECT * FROM COCK_TAIL WHERE idDrink = :id")
-     fun searchCockTailById(id: String): Flow<CockTail>
+    @Query("UPDATE COCK_TAIL SET IsLiked = :isLiked WHERE idDrink = :id")
+    suspend fun likeDisLikeCock(isLiked: Boolean, id: String)
 
-     @Query("UPDATE COCK_TAIL SET IsLiked = :isLiked WHERE idDrink = :id")
-     suspend fun likeDisLikeCock(isLiked: Boolean, id: String)
+    @Query("DELETE FROM COCK_TAIL")
+    suspend fun deleteTable()
 }
