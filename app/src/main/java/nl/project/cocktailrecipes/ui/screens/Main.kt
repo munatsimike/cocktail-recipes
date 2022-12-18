@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.Text
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import nl.project.cocktailrecipes.R
 import nl.project.cocktailrecipes.ui.layouts.CockTailLayout
 import nl.project.cocktailrecipes.ui.state.NetworkState
@@ -26,12 +26,11 @@ import nl.project.cocktailrecipes.viewModel.CockTailViewModel
 // code to display home screen
 object Main {
 
-    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     fun ShowCockTail(
         modifier: Modifier = Modifier,
         cockTailViewModel: CockTailViewModel,
-        modalBottomSheetState: ModalBottomSheetState
+        navController: NavHostController
     ) {
         val cocktails by cockTailViewModel.cockTails.collectAsState()
         val popularCocktails by cockTailViewModel.popularCockTail.collectAsState()
@@ -74,7 +73,7 @@ object Main {
                                             CockTailLayout.Show(
                                                 cocktail = cocktail,
                                                 cockTailViewModel,
-                                                modalBottomSheetState,
+                                                navHostController = navController,
                                                 isPopular = true
                                             )
                                         }
@@ -99,7 +98,7 @@ object Main {
                                 CockTailLayout.Show(
                                     cocktail = cocktail,
                                     cockTailViewModel,
-                                    modalBottomSheetState,
+                                    navHostController = navController,
                                     isPopular = false
                                 )
                             }

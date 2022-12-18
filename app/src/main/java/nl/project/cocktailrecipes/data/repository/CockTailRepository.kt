@@ -18,10 +18,10 @@ class CockTailRepository @Inject constructor(
     // fetch cocktails from room
     val cocktails = cockTailDao.fetchCockTails()
 
-    suspend fun saveCocktailsToRoom() {
+    suspend fun saveCocktailsToRoom(searchQuery: String) {
         database.withTransaction {
             cockTailDao.deleteTable()
-            cockTailDao.insertCockTails(cockTailService.searchCockTail().drinks)
+            cockTailDao.insertCockTails(cockTailService.searchCockTail(searchQuery).drinks)
         }
     }
 

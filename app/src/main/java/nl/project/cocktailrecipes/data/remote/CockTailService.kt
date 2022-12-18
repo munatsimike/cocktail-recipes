@@ -6,8 +6,8 @@ import retrofit2.http.Query
 
 interface CockTailService {
     @GET("search.php")
-    suspend fun searchCockTail(@Query("f") searchQuery: String = "a"): ApiResponse
+    suspend fun searchCockTail(@Query("f") searchQuery: String): ApiResponse
 
     @GET("search.php")
-    suspend fun popularCockTail(@Query("f") ingredient: String = "b"): ApiResponse
+    suspend fun popularCockTail(@Query("f") ingredient: String): ApiResponse
 }

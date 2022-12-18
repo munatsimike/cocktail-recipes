@@ -35,14 +35,16 @@ class CockTailViewModel @Inject constructor(
         fetchPopularCockTails()
     }
 
-    private suspend fun saveCockTailsToRoomDb() {
-        cockTailRepository.saveCocktailsToRoom()
+     fun saveCockTailsToRoomDb(searchQuery: String) {
+         viewModelScope.launch {
+             cockTailRepository.saveCocktailsToRoom(searchQuery)
+         }
     }
 
-    private fun fetchCockTails() {
+     private fun fetchCockTails(searchQuery: String ="a") {
         _cockTails.value = NetworkState.Loading
         viewModelScope.launch {
-            saveCockTailsToRoomDb()
+            saveCockTailsToRoomDb(searchQuery)
             cockTailRepository.cocktails.collectLatest {
                 _cockTails.value = NetworkState.Success(it)
             }
